@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website URL Analyzer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Website URL Analyzer</h1>
+    <form id="url-form" method="POST" action="/">
+        <label for="url">Enter URL here:</label>
+        <input type="text" id="url" name="url" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    <h2>Analysis Result:</h2>
+    <p id="analysis-result"></p>
+
+    <h2>Ask a Question:</h2>
+    <form id="question-form">
+        <label for="question">Your Question:</label>
+        <input type="text" id="question" name="question" required>
+        <button type="submit">Ask</button>
+    </form>
+
+    <h2>Question Response:</h2>
+    <p id="question-response"></p>
+
+    <script>
+        $(document).ready(function() {
+            $('#url-form').on('submit', function(event) {
+                event.preventDefault();  // Prevent default form submission
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        $('#analysis-result').text(data.analysis);
+                    },
+                    error: function(xhr) {
+                        alert('Error: ' + xhr.responseJSON.error);
+                    }
+                });
+            });
+
+            $('#question-form').on('submit', function(event) {
+                event.preventDefault();  // Prevent default form submission
+                const question = $('#question').val();
+                const url = $('#url').val(); // Use the same URL from the first form
+                $.ajax({
+                    type: 'POST',
+                    url: '/ask',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ question: question, url: url }),
+                    success: function(data) {
+                        $('#question-response').text(data.response);
+                    },
+                    error: function(xhr) {
+                        alert('Error: ' + xhr.responseJSON.error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
