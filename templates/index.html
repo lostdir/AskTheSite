@@ -3,29 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website URL Analyzer</title>
+    <title>ASK-THE-SITE</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #357ab8;
+        }
+        h2 {
+            margin-top: 40px;
+            color: #4a90e2;
+        }
+        #analysis-result, #question-response {
+            background-color: #e7f3ff;
+            border-left: 6px solid #4a90e2;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;  /* Hide initially */
+        }
+    </style>
 </head>
 <body>
-    <h1>Website URL Analyzer</h1>
+    <h1>ASK-THE-SITE</h1>
     <form id="url-form" method="POST" action="/">
         <label for="url">Enter URL here:</label>
-        <input type="text" id="url" name="url" required>
+        <input type="text" id="url" name="url" placeholder="https://example.com" required>
         <button type="submit">Analyze</button>
     </form>
 
-    <h2>Analysis Result:</h2>
-    <p id="analysis-result"></p>
+    <div id="analysis-section">
+        <h2>Analysis Result:</h2>
+        <p id="analysis-result"></p>
+    </div>
 
     <h2>Ask a Question:</h2>
     <form id="question-form">
         <label for="question">Your Question:</label>
-        <input type="text" id="question" name="question" required>
+        <input type="text" id="question" name="question" placeholder="What is the main topic?" required>
         <button type="submit">Ask</button>
     </form>
 
-    <h2>Question Response:</h2>
-    <p id="question-response"></p>
+    <div id="response-section">
+        <h2>Question Response:</h2>
+        <p id="question-response"></p>
+    </div>
 
     <script>
         $(document).ready(function() {
@@ -36,7 +96,7 @@
                     url: $(this).attr('action'),
                     data: $(this).serialize(),
                     success: function(data) {
-                        $('#analysis-result').text(data.analysis);
+                        $('#analysis-result').text(data.analysis).show();
                     },
                     error: function(xhr) {
                         alert('Error: ' + xhr.responseJSON.error);
@@ -54,7 +114,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({ question: question, url: url }),
                     success: function(data) {
-                        $('#question-response').text(data.response);
+                        $('#question-response').text(data.response).show();
                     },
                     error: function(xhr) {
                         alert('Error: ' + xhr.responseJSON.error);
