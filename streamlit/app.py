@@ -10,9 +10,7 @@ load_dotenv()
 
 # Check for the GROQ API key
 # Check for the GROQ API key in Streamlit secrets
-if "GROQ_API_KEY" not in st.secrets:
-    st.error("GROQ_API_KEY is not set in the Streamlit secrets.")
-    st.stop()
+GROQ_API_KEY = st.secrets["general"]["GROQ_API_KEY"]
 
 # Initialize the LLM
 llm = ChatGroq(
