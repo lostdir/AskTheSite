@@ -5,15 +5,20 @@ import requests
 from bs4 import BeautifulSoup
 import streamlit as st
 
-# Load environment variables
-load_dotenv()
-
-# Access the API key from secrets
+# Retrieve the API key from Streamlit secrets
 try:
-    api_key = st.secrets["general"]["GROQ_API_KEY"]  # Adjust based on the TOML setup
-    st.write("API Key retrieved successfully!")
-except KeyError:
-    st.error("API Key not found in secrets.")
+    api_key = st.secrets["general"]["GROQ_API_KEY"]  # Adjust according to your secrets setup
+except KeyError as e:
+    st.error(f"Error: {str(e)}")
+    st.stop()  # Stop further execution if the API key is missing
+
+# Initialize the LLM
+llm = ChatGroq(
+    api_key=api_key,
+    model="llama3-8b-8192",
+    temperature=0,
+    max_tokens=None,
+)
 
 # Initialize the LLM
 llm = ChatGroq(# Check for the GROQ API key
