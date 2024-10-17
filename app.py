@@ -61,30 +61,36 @@ def extract_keywords(url):
         return None
 
 def extract_main_content(url):
-    """Extract main content from the given URL."""
+    """Extract main content from the given URL, including <div>, <span>, <p>, <ul>, and <ol> tags."""
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Extract the main content from paragraphs, unordered lists, and ordered lists
+
+        # Extract the main content from various tags
+        content_parts = []
+
+        # Collect text from <p> tags
         paragraphs = soup.find_all('p')
+        content_parts.extend([para.get_text() for para in paragraphs])
+
+
+        # Collect text from <span> tags
+        spans = soup.find_all('span')
+        content_parts.extend([span.get_text() for span in spans])
+
+        # Collect text from unordered lists <ul>
         unordered_lists = soup.find_all('ul')
-        ordered_lists = soup.find_all('ol')
-
-        # Collect text from paragraphs
-        content = ' '.join([para.get_text() for para in paragraphs])
-
-        # Collect text from unordered lists
         for ul in unordered_lists:
             list_items = ul.find_all('li')
-            content += ' '.join([li.get_text() for li in list_items])
+            content_parts.extend([li.get_text() for li in list_items])
 
-        # Collect text from ordered lists
+        # Collect text from ordered lists <ol>
+        ordered_lists = soup.find_all('ol')
         for ol in ordered_lists:
             list_items = ol.find_all('li')
-            content += ' '.join([li.get_text() for li in list_items])
+            content_parts.extend([li.get_text() for li in list_items])
 
-        return content.strip()  # Strip whitespace
+        return ' '.join(content_parts).strip()  # Strip whitespace and join content
     except Exception as e:
         print(f"Error extracting main content: {e}")
         return None
@@ -136,10 +142,10 @@ def extract_analysis_text(response):
 
 def ask_question_to_llm(question, main_content):
     """Ask a question to the LLM based on the extracted main content."""
-    prompt_text = f"Based on the following content, answer the question,analyze the content and study it to answer the question:\n\n{main_content}\n\nQuestion: {question}"
+    prompt_text = f"Based on the following content, answer the question, analyze the content and study it to answer the question:\n\n{main_content}\n\nQuestion: {question}"
 
     messages_to_invoke = [
-        ("system", "You are a helpful assistant that provides answers based on given information.when asked for recent or latest give information available from the most recent year. dont respond like : according to the text,respond as you know that and clean the response if needed "),
+        ("system", "You are a helpful assistant that provides answers based on given information. When asked for recent or latest give information available from the most recent year. Don't respond like: according to the text, respond as you know that and clean the response if needed."),
         ("human", prompt_text),
     ]
 
@@ -147,7 +153,6 @@ def ask_question_to_llm(question, main_content):
     response = llm.invoke(messages_to_invoke)
 
     return extract_analysis_text(response)
-
 
 @app.route("/", methods=["GET", "POST"])
 def index():
