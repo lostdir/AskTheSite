@@ -17,8 +17,6 @@ except KeyError:
 
 # Initialize the LLM
 llm = ChatGroq(# Check for the GROQ API key
-# Check for the GROQ API key in Streamlit secrets
-api_key = api_key
     api_key=api_key,
     model="llama3-8b-8192",
     temperature=0,
