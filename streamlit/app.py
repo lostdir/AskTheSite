@@ -9,8 +9,9 @@ import streamlit as st
 load_dotenv()
 
 # Check for the GROQ API key
-if "GROQ_API_KEY" not in os.environ:
-    st.error("GROQ_API_KEY is not set in the environment variables.")
+# Check for the GROQ API key in Streamlit secrets
+if "GROQ_API_KEY" not in st.secrets:
+    st.error("GROQ_API_KEY is not set in the Streamlit secrets.")
     st.stop()
 
 # Initialize the LLM
