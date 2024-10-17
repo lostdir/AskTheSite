@@ -8,12 +8,17 @@ import streamlit as st
 # Load environment variables
 load_dotenv()
 
-# Check for the GROQ API key
-# Check for the GROQ API key in Streamlit secrets
-api_key = st.secrets["general"]["GROQ_API_KEY"]
+# Access the API key from secrets
+try:
+    api_key = st.secrets["general"]["GROQ_API_KEY"]  # Adjust based on the TOML setup
+    st.write("API Key retrieved successfully!")
+except KeyError:
+    st.error("API Key not found in secrets.")
 
 # Initialize the LLM
-llm = ChatGroq(
+llm = ChatGroq(# Check for the GROQ API key
+# Check for the GROQ API key in Streamlit secrets
+api_key = api_key
     api_key=api_key,
     model="llama3-8b-8192",
     temperature=0,
