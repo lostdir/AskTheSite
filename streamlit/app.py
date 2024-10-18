@@ -25,7 +25,7 @@ chat = ChatGroq(
     api_key=api_key,
     model="llama-3.1-8b-instant",
     temperature=1,
-    max_tokens=83210,
+    max_tokens=8000,
     timeout=None,
     max_retries=2,
 )
