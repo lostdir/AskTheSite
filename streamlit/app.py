@@ -5,19 +5,27 @@ import requests
 from bs4 import BeautifulSoup
 import streamlit as st
 
-# Load environment variables
-load_dotenv()
-
-# Check for the GROQ API key
-if "GROQ_API_KEY" not in os.environ:
-    st.error("GROQ_API_KEY is not set in the environment variables.")
-    st.stop()
+# Retrieve the API key from Streamlit secrets
+try:
+    api_key = st.secrets["general"]["GROQ_API_KEY"]  # Adjust according to your secrets setup
+except KeyError as e:
+    st.error(f"Error: {str(e)}")
+    st.stop()  # Stop further execution if the API key is missing
 
 # Initialize the LLM
 llm = ChatGroq(
-    model="llama3-8b-8192",
-    temperature=0,
-    max_tokens=None,
+    api_key=api_key,
+    model="llama-3.1-70b-versatile",
+    temperature=1,
+    max_tokens=7950,
+    timeout=None,
+    max_retries=2,
+)
+chat = ChatGroq(
+    api_key=api_key,
+    model="llama-3.1-8b-instant",
+    temperature=1,
+    max_tokens=8000,
     timeout=None,
     max_retries=2,
 )
@@ -93,7 +101,7 @@ def analyze_url(url):
         ("human", prompt_text),
     ]
 
-    response = llm.invoke(messages_to_invoke)
+    response = chat.invoke(messages_to_invoke)
     return extract_analysis_text(response)
 
 def extract_analysis_text(response):
@@ -104,12 +112,13 @@ def extract_analysis_text(response):
         return "Analysis could not be retrieved."
 
 def ask_question_to_llm(question, main_content):
-    prompt_text = f"Based on the following content, answer the question:\n\n{main_content}\n\nQuestion: {question}"
+    truncated_content = main_content[:5000]
+    prompt_text = f"Based on the following content, answer the question:\n\n{truncated_content}\n\nQuestion: {question}"
     messages_to_invoke = [
         ("system", "You are a helpful assistant."),
         ("human", prompt_text),
     ]
-    response = llm.invoke(messages_to_invoke)
+    response = llm.invoke(messages_to_invoke,max_tokens=8000)
     return extract_analysis_text(response)
 
 # Apply custom CSS
