@@ -15,10 +15,13 @@ except KeyError as e:
 # Initialize the LLM
 llm = ChatGroq(
     api_key=api_key,
-    model="llama3-8b-8192",
-    temperature=0,
-    max_tokens=None,
+    model="llama-3.1-70b-versatile",
+    temperature=1,
+    max_tokens=29750,
+    timeout=None,
+    max_retries=2,
 )
+
 
 # Initialize the LLM
 llm = ChatGroq(# Check for the GROQ API key
