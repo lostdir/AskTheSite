@@ -22,17 +22,6 @@ llm = ChatGroq(
     max_retries=2,
 )
 
-
-# Initialize the LLM
-llm = ChatGroq(# Check for the GROQ API key
-    api_key=api_key,
-    model="llama3-8b-8192",
-    temperature=0,
-    max_tokens=None,
-    timeout=None,
-    max_retries=2,
-)
-
 # Functions for data extraction
 def extract_title(url):
     try:
