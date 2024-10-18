@@ -101,7 +101,7 @@ def analyze_url(url):
         ("human", prompt_text),
     ]
 
-    response = llm.invoke(messages_to_invoke)
+    response = chat.invoke(messages_to_invoke)
     return extract_analysis_text(response)
 
 def extract_analysis_text(response):
@@ -117,7 +117,7 @@ def ask_question_to_llm(question, main_content):
         ("system", "You are a helpful assistant."),
         ("human", prompt_text),
     ]
-    response = chat.invoke(messages_to_invoke)
+    response = llm.invoke(messages_to_invoke)
     return extract_analysis_text(response)
 
 # Apply custom CSS
