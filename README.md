@@ -16,6 +16,7 @@
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
+- [Adding Groq API](#adding-groq-api)
 - [Usage](#usage)
 - [How It Works](#how-it-works)
 - [Contributing](#contributing)
@@ -57,6 +58,34 @@ Make sure you have the following installed:
    ```bash
    pip install -r requirements.txt
    ```
+
+## Adding Groq API
+To integrate the Groq API for enhanced conversational capabilities, follow these steps:
+
+1. **Sign Up/Log In**:
+   - Go to the [Groq Console](https://console.groq.com/).
+   - Sign up for an account or log in if you already have one.
+
+2. **Create a New API Key**:
+   - Navigate to the API section in the Groq Console.
+   - Click on "Create API Key".
+   - Save the generated API key securely; you will need it for your application.
+
+3. **Configure Your Application**:
+   - In your project directory, create a `.env` file if it doesn't already exist.
+   - Add your Groq API key to the `.env` file:
+     ```plaintext
+     GROQ_API_KEY=your_api_key_here
+     ```
+
+4. **Update the Application**:
+   - Ensure your application is set up to read the API key from the environment variables.
+   - Use the Groq API to process user queries in the application logic.
+
+5. **Test the Integration**:
+   - Run your Flask or Streamlit application.
+   - Enter a URL and ask questions to verify that the integration is working correctly.
+
 
 ## Usage
 ### Flask Interface
