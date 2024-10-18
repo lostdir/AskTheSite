@@ -17,7 +17,7 @@ llm = ChatGroq(
     api_key=api_key,
     model="llama-3.1-70b-versatile",
     temperature=1,
-    max_tokens=29750,
+    max_tokens=7950,
     timeout=None,
     max_retries=2,
 )
