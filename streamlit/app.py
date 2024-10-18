@@ -21,6 +21,14 @@ llm = ChatGroq(
     timeout=None,
     max_retries=2,
 )
+chat = ChatGroq(
+    api_key=api_key,
+    model="llama-3.1-8b-instant",
+    temperature=1,
+    max_tokens=83210,
+    timeout=None,
+    max_retries=2,
+)
 
 # Functions for data extraction
 def extract_title(url):
@@ -109,7 +117,7 @@ def ask_question_to_llm(question, main_content):
         ("system", "You are a helpful assistant."),
         ("human", prompt_text),
     ]
-    response = llm.invoke(messages_to_invoke)
+    response = chat.invoke(messages_to_invoke)
     return extract_analysis_text(response)
 
 # Apply custom CSS
