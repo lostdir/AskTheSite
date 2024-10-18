@@ -118,7 +118,7 @@ def ask_question_to_llm(question, main_content):
         ("system", "You are a helpful assistant."),
         ("human", prompt_text),
     ]
-    response = llm.invoke(messages_to_invoke,max_tokens=12000)
+    response = llm.invoke(messages_to_invoke,max_tokens=8000)
     return extract_analysis_text(response)
 
 # Apply custom CSS
