@@ -112,12 +112,13 @@ def extract_analysis_text(response):
         return "Analysis could not be retrieved."
 
 def ask_question_to_llm(question, main_content):
-    prompt_text = f"Based on the following content, answer the question:\n\n{main_content}\n\nQuestion: {question}"
+    truncated_content = main_content[:5000]
+    prompt_text = f"Based on the following content, answer the question:\n\n{truncated_content}\n\nQuestion: {question}"
     messages_to_invoke = [
         ("system", "You are a helpful assistant."),
         ("human", prompt_text),
     ]
-    response = llm.invoke(messages_to_invoke)
+    response = llm.invoke(messages_to_invoke,max_tokens=12000)
     return extract_analysis_text(response)
 
 # Apply custom CSS
