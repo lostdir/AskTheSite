@@ -129,10 +129,9 @@ st.markdown(
 )
 
 # Streamlit UI
-st.toast('Still in beta, some sites may not function perfectly.')
 st.markdown('<div class="title">🌐 Chat With Site</div>', unsafe_allow_html=True)
 st.write('<p class="p">Analyze any website and get insights or ask questions about the content.</p>', unsafe_allow_html=True)
-
+st.toast('Still in beta, some sites may not function perfectly.')
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
