@@ -133,7 +133,7 @@ st.markdown('<div class="title">🌐 Chat With Site</div>', unsafe_allow_html=Tr
 st.write('<p class="p">Analyze any website and get insights or ask questions about the content.</p>', unsafe_allow_html=True)
 if "notification_shown" not in st.session_state:
     # Display the toast message
-    st.toast('Still in beta, some sites may not function perfectly.')
+    st.toast('🚧 Still in beta, some sites may not function perfectly.')
 
     # Set the session state to ensure it's only shown once
     st.session_state.notification_shown = True
