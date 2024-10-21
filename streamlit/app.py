@@ -56,11 +56,24 @@ def extract_main_content(url):
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.content, 'html.parser')
-        content_parts = [p.get_text() for p in soup.find_all('p')]
+        content_parts = []
+        paragraphs = soup.find_all('p')
+        content_parts.extend([para.get_text() for para in paragraphs])
+        spans = soup.find_all('span')
+        content_parts.extend([span.get_text() for span in spans])
+        unordered_lists = soup.find_all('ul')
+        for ul in unordered_lists:
+            list_items = ul.find_all('li')
+            content_parts.extend([li.get_text() for li in list_items])
+        ordered_lists = soup.find_all('ol')
+        for ol in ordered_lists:
+            list_items = ol.find_all('li')
+            content_parts.extend([li.get_text() for li in list_items])
         return ' '.join(content_parts).strip()
     except Exception as e:
         st.error(f"Error extracting main content: {e}")
         return None
+
 
 def analyze_url(url):
     title = extract_title(url) or "No title found"
